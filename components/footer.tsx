@@ -14,7 +14,7 @@ export default function Footer() {
               </a>
             </p>
           </div>
-          <p className="text-sm text-muted-foreground font-light">Buil and Managed by PageoNix</p>
+          <p className="text-sm text-muted-foreground font-light">Build and Managed by PageoNix</p>
         </div>
       </div>
     </footer>
