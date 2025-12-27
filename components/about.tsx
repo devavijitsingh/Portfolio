@@ -20,7 +20,7 @@ export default function About() {
   ]
 
   return (
-    <section id="about" className="py-20 px-6 border-t border-border">
+    <section id="about" className="py-20 px-6 border-t border-border scroll-mt-36">
       <div className="max-w-5xl mx-auto space-y-12">
         <div className="space-y-4">
           <h2 className="text-4xl md:text-5xl font-bold">About Me</h2>

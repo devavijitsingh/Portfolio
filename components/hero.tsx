@@ -1,113 +1,140 @@
-"use client"
-
 import { useEffect, useState } from "react"
-import { ArrowRight } from "lucide-react"
-import Image from "next/image"
+import { ArrowRight, Terminal } from "lucide-react"
+import { motion } from "framer-motion"
+import { Poppins } from "next/font/google"
 
-const ROLES = [
-  "Full Stack Developer",
-  "Python & Flask Expert",
-  "React Developer",
-  "Backend Architect",
-  "Web3 Enthusiast",
-  "PageoNix Founder",
-]
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["700", "800", "900"],
+})
 
 export default function Hero() {
-  const [displayText, setDisplayText] = useState("")
+  const [mounted, setMounted] = useState(false)
+  const [text, setText] = useState("")
   const [roleIndex, setRoleIndex] = useState(0)
-  const [charIndex, setCharIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  useEffect(() => {
-    const timer = setTimeout(
-      () => {
-        if (!isDeleting) {
-          if (charIndex < ROLES[roleIndex].length) {
-            setDisplayText(ROLES[roleIndex].substring(0, charIndex + 1))
-            setCharIndex(charIndex + 1)
-          } else {
-            setIsDeleting(true)
-          }
-        } else {
-          if (charIndex > 0) {
-            setDisplayText(ROLES[roleIndex].substring(0, charIndex - 1))
-            setCharIndex(charIndex - 1)
-          } else {
-            setIsDeleting(false)
-            setRoleIndex((roleIndex + 1) % ROLES.length)
-          }
-        }
-      },
-      isDeleting ? 50 : 100,
-    )
+  const roles = ["Backend Developer", "Flask Developer", "Security Engineer", "ML Engineer", "Web Developer"]
+  const typingSpeed = 50
+  const deletingSpeed = 50
+  const pauseTime = 2000
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    const handleTyping = () => {
+      const currentRole = roles[roleIndex]
+
+      if (isDeleting) {
+        setText(currentRole.substring(0, text.length - 1))
+      } else {
+        setText(currentRole.substring(0, text.length + 1))
+      }
+
+      if (!isDeleting && text === currentRole) {
+        setTimeout(() => setIsDeleting(true), pauseTime)
+      } else if (isDeleting && text === "") {
+        setIsDeleting(false)
+        setRoleIndex((prev) => (prev + 1) % roles.length)
+      }
+    }
+
+    const timer = setTimeout(handleTyping, isDeleting ? deletingSpeed : typingSpeed)
     return () => clearTimeout(timer)
-  }, [charIndex, isDeleting, roleIndex])
+  }, [text, isDeleting, roleIndex, roles])
+
+  if (!mounted) return null
 
   return (
-    <section className="min-h-screen flex items-center justify-center pt-20 px-6">
-      <div className="max-w-5xl mx-auto text-center space-y-8">
-        <div className="flex justify-center mb-6">
-          <div className="w-32 h-32 rounded-xl overflow-hidden border-2 border-border">
-            <Image
-              src="https://avatars.githubusercontent.com/u/113085967?v=4"
-              alt="Avijit Singh - Full Stack Developer"
-              width={128}
-              height={128}
-              className="w-full h-full object-cover"
-              priority
-            />
-          </div>
-        </div>
+    <section className="min-h-screen flex items-center justify-center pt-20 pb-10 px-6 overflow-hidden relative bg-background">
+      {/* Removed bg-background to let canvas show through */}
 
-        <div className="space-y-4">
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight">Hello, I'm Avijit</h1>
+      <div className="max-w-7xl mx-auto w-full flex flex-col items-center text-center z-10">
+        <motion.div
+          initial={{ opacity: 0, x: -100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="space-y-6 text-center lg:text-left relative z-10 flex flex-col items-center"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/30 border border-secondary/50 text-sm font-medium text-secondary-foreground backdrop-blur-sm"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+            </span>
+            Available for Freelance & Consulting
+          </motion.div>
 
-          <div className="min-h-16 flex items-center justify-center">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className={`text-5xl md:text-8xl lg:text-9xl font-black tracking-tighter ${poppins.className} leading-tight md:leading-none`}
+          >
+            <span className="text-muted-foreground block text-lg md:text-2xl font-medium tracking-widest uppercase mb-4">
+              Hello there 👋
+            </span>
+            <span className="text-foreground/90">I&apos;m </span>
+            <span className="bg-gradient-to-r from-foreground via-foreground/80 to-muted-foreground bg-clip-text text-transparent">
+              AVIJIT SINGH
+            </span>
+          </motion.h1>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="mt-6 space-y-2 flex flex-col items-center"
+          >
+            <div className="h-[60px] md:h-[80px] flex items-center justify-center">
+              <h2 className="text-3xl md:text-5xl font-bold text-muted-foreground">
+                {text}
+                <span className="animate-blink ml-1">|</span>
+              </h2>
+            </div>
             <p className="text-xl md:text-3xl text-muted-foreground font-light">
-              {displayText}
-              <span className="animate-pulse ml-1">|</span>
+              & Founder @ <span className="text-foreground font-medium">PageoNix</span>
             </p>
-          </div>
-        </div>
+          </motion.div>
 
-        <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed font-light">
-          Crafting elegant solutions to complex problems with modern technologies. I specialize in full-stack
-          development, Python backends, and innovative web applications. Passionate about building products that make an
-          impact.
-        </p>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="mt-8 text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed"
+          >
+            Architecting robust scalable systems and building high-performance web applications.
+            Turning complex backend logic into seamless user experiences.
+          </motion.p>
 
-        <div className="bg-card border border-border rounded-lg p-4 max-w-md mx-auto">
-          <p className="text-sm text-muted-foreground mb-2">Currently Leading:</p>
-          <a
-            href="https://pageonix.in"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-lg font-semibold hover:underline text-foreground"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="mt-12 flex flex-col sm:flex-row items-center gap-4"
           >
-            PageoNix - Founder & CEO
-          </a>
-          <p className="text-xs text-muted-foreground mt-2">
-            Creating innovative no-code solutions for modern web development
-          </p>
-        </div>
-
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-          <a
-            href="#projects"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-foreground text-background rounded-lg hover:opacity-90 transition-opacity font-medium"
-          >
-            View My Work
-            <ArrowRight size={18} />
-          </a>
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 px-6 py-3 border border-border rounded-lg hover:bg-muted transition-colors"
-          >
-            Get in Touch
-          </a>
-        </div>
+            <a
+              href="#projects"
+              className="group px-8 py-4 bg-foreground text-background rounded-full font-semibold text-lg hover:opacity-90 transition-all flex items-center gap-2"
+            >
+              View Projects
+              <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+            </a>
+            <a
+              href="#contact"
+              className="px-8 py-4 bg-background border border-border rounded-full font-semibold text-lg hover:bg-muted transition-colors flex items-center gap-2"
+            >
+              <Terminal size={20} />
+              Contact Me
+            </a>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   )
