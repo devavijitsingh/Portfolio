@@ -27,7 +27,7 @@ export default function Contact() {
 
   const loadCaptcha = async () => {
     try {
-      const response = await fetch("https://flask-email-api-w0xd.onrender.com/captcha")
+      const response = await fetch("https://flask-email-api.onrender.com/captcha")
       const captchaIdHeader = response.headers.get("Captcha-ID")
       if (captchaIdHeader) {
         setCaptchaId(captchaIdHeader)
@@ -46,7 +46,7 @@ export default function Contact() {
     setStatus("")
 
     try {
-      const response = await fetch("https://flask-email-api-w0xd.onrender.com/send-mail", {
+      const response = await fetch("https://flask-email-api.onrender.com/send-mail", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
