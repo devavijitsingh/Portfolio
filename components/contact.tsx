@@ -116,7 +116,7 @@ export default function Contact() {
       icon: Github,
       label: "GitHub",
       value: "devavijitsingh",
-      href: "https://github.com/DevLord-Avijit",
+      href: "https://github.com/DevAvijitsingh",
       color: "hover:text-foreground",
     },
   ]
