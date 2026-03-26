@@ -33,12 +33,12 @@ export default function GithubStats() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userRes = await fetch("https://api.github.com/users/DevLord-Avijit")
+        const userRes = await fetch("https://api.github.com/users/DevAvijitsingh")
         if (!userRes.ok) throw new Error("Failed to fetch user")
         const userData = await userRes.json()
         setUser(userData)
 
-        const reposRes = await fetch("https://api.github.com/users/DevLord-Avijit/repos?sort=updated&per_page=6")
+        const reposRes = await fetch("https://api.github.com/users/DevAvijitsingh/repos?sort=updated&per_page=6")
         if (!reposRes.ok) throw new Error("Failed to fetch repos")
         const reposData = await reposRes.json()
         setRepos(reposData)
